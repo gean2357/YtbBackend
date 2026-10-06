@@ -1,0 +1,17 @@
+{
+  "name": "youtube-downloader-backend",
+  "version": "1.0.0",
+  "description": "Backend for YouTube Downloader",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@distube/ytdl-core": "^4.14.4",
+    "adm-zip": "^0.6.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "play-dl": "^1.9.7",
+    "ytdl-core": "^4.11.5"
+  }
+}
