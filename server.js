@@ -34,7 +34,7 @@ app.post('/api/download', async (req, res) => {
         const ffmpegFlag = isWin ? '--ffmpeg-location ".\\mtool.exe"' : '';
 
         // 1. Obter informações do vídeo com yt-dlp
-        const cmdJSON = `${ytDlpPath} --dump-json --no-warnings --no-check-certificates "${url}"`;
+        const cmdJSON = `${ytDlpPath} --dump-json --no-warnings --no-check-certificates --extractor-args "youtube:player_client=ios" "${url}"`;
         const { stdout } = await execPromise(cmdJSON, { maxBuffer: 10 * 1024 * 1024 });
         const info = JSON.parse(stdout);
         
@@ -47,9 +47,7 @@ app.post('/api/download', async (req, res) => {
         }
 
         // 2. Baixar o vídeo (melhor vídeo e áudio, o ffmpeg que instalei agora vai juntar eles)
-        const cmdDownload = `${ytDlpPath} --quiet --no-warnings ${ffmpegFlag} -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --merge-output-format mp4 -o "${filepath}" --no-check-certificates "${url}"`;
-        await execPromise(cmdDownload, { maxBuffer: 10 * 1024 * 1024 });
-
+        const cmdDownload = `${ytDlpPath} --quiet --no-warnings ${ffmpegFlag} --extractor-args "youtube:player_client=ios" -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --merge-output-format mp4 -o "${filepath}" --no-check-certificates "${url}"`;
         res.json({ success: true, message: 'Vídeo baixado com sucesso!', filename });
 
     } catch (error) {
